@@ -1,0 +1,55 @@
+{
+  "feature_name": "Smart Insights Dashboard",
+  "version": "4.2.0",
+  "release_date": "2026-03-27",
+  "description": "Smart Insights is a new AI-powered analytics dashboard that provides real-time recommendations, trend analysis, and predictive metrics for PurpleMerit users. The feature includes a redesigned UI, real-time data sync, export capabilities, and personalized insight cards.",
+  "key_changes": [
+    "New Smart Insights tab with AI-driven recommendations",
+    "Redesigned main dashboard UI with modern card layout",
+    "Real-time data synchronization engine (WebSocket-based)",
+    "Export to PDF/CSV from any Insights chart",
+    "New onboarding flow for first-time Smart Insights users",
+    "Backend migration from REST polling to WebSocket streaming",
+    "Updated payment SDK to v3.8.1 for PCI compliance"
+  ],
+  "known_issues": [
+    {
+      "id": "KI-001",
+      "severity": "high",
+      "description": "Smart Insights may crash on Android 13 devices with less than 4GB RAM due to memory-intensive chart rendering.",
+      "workaround": "Users can disable animated charts in Settings > Display.",
+      "eta_fix": "Hotfix planned for v4.2.1 (ETA: April 3, 2026)"
+    },
+    {
+      "id": "KI-002",
+      "severity": "medium",
+      "description": "Intermittent payment gateway timeouts observed during peak hours (2-5 PM UTC) after SDK upgrade.",
+      "workaround": "Retry payment after 30 seconds. Issue under investigation with payment provider.",
+      "eta_fix": "Patch in progress, ETA: April 5, 2026"
+    },
+    {
+      "id": "KI-003",
+      "severity": "medium",
+      "description": "API latency for Smart Insights endpoints is higher than target (p95 > 300ms vs 200ms target) due to unoptimized database queries.",
+      "workaround": "None. Engineering team is optimizing query paths.",
+      "eta_fix": "Optimization in v4.2.2 (ETA: April 8, 2026)"
+    },
+    {
+      "id": "KI-004",
+      "severity": "low",
+      "description": "Onboarding tooltip overlaps with navigation bar on tablets in landscape mode.",
+      "workaround": "Rotate to portrait mode.",
+      "eta_fix": "v4.3.0"
+    }
+  ],
+  "rollback_plan": "If critical issues arise, rollback to v4.1.9 is available via feature flag `smart_insights_enabled=false`. Database migrations are backward-compatible.",
+  "success_criteria": {
+    "signup_conversion": ">= 12% (no regression from baseline)",
+    "feature_adoption_funnel": ">= 20% of DAU within 14 days",
+    "crash_rate": "< 1.0%",
+    "api_latency_p95": "< 250ms",
+    "payment_success_rate": ">= 98.5%",
+    "support_ticket_volume": "< 2x baseline",
+    "churn_rate": "< 2.5%"
+  }
+}

@@ -1,0 +1,363 @@
+{
+  "meta": {
+    "system": "PurpleMerit War Room Decision System",
+    "version": "1.0.0",
+    "timestamp": "2026-04-08T08:01:55.403110",
+    "feature": "Smart Insights Dashboard",
+    "feature_version": "4.2.0",
+    "agents_involved": [
+      "DataAnalystAgent",
+      "ProductManagerAgent",
+      "MarketingCommsAgent",
+      "RiskCriticAgent",
+      "SREAgent"
+    ]
+  },
+  "decision": "ROLL_BACK",
+  "decision_scores": {
+    "PROCEED": 0,
+    "PAUSE": 0.35,
+    "ROLL_BACK": 0.6
+  },
+  "agent_recommendations": {
+    "DataAnalyst": "ROLL_BACK",
+    "ProductManager": "ROLL_BACK",
+    "RiskCritic": "PAUSE"
+  },
+  "rationale": {
+    "primary_drivers": [
+      "Critical stability and revenue metrics degrading. Immediate rollback recommended to prevent further user impact.",
+      "signup_conversion FAILING: actual=11.86 vs threshold=>= 12.0",
+      "crash_rate FAILING: actual=2.5 vs threshold=< 1.0",
+      "api_latency_p95 FAILING: actual=444.6 vs threshold=< 250.0",
+      "payment_success_rate FAILING: actual=96.09 vs threshold=>= 98.5",
+      "support_ticket_volume FAILING: actual=160.0 vs threshold=< 100.0",
+      "churn_rate FAILING: actual=3.36 vs threshold=< 2.5"
+    ],
+    "metric_references": {
+      "signup_conversion": {
+        "metric": "signup_conversion_pct",
+        "threshold": ">= 12.0",
+        "actual_value": 11.86,
+        "status": "FAIL",
+        "gap": -0.14
+      },
+      "crash_rate": {
+        "metric": "crash_rate_pct",
+        "threshold": "< 1.0",
+        "actual_value": 2.5,
+        "status": "FAIL",
+        "gap": 1.5
+      },
+      "api_latency_p95": {
+        "metric": "api_latency_p95_ms",
+        "threshold": "< 250.0",
+        "actual_value": 444.6,
+        "status": "FAIL",
+        "gap": 194.6
+      },
+      "payment_success_rate": {
+        "metric": "payment_success_rate_pct",
+        "threshold": ">= 98.5",
+        "actual_value": 96.09,
+        "status": "FAIL",
+        "gap": -2.41
+      },
+      "support_ticket_volume": {
+        "metric": "support_ticket_volume",
+        "threshold": "< 100.0",
+        "actual_value": 160.0,
+        "status": "FAIL",
+        "gap": 60.0
+      },
+      "churn_rate": {
+        "metric": "churn_rate_pct",
+        "threshold": "< 2.5",
+        "actual_value": 3.36,
+        "status": "FAIL",
+        "gap": 0.86
+      }
+    },
+    "feedback_summary": {
+      "total_feedback": 40,
+      "sentiment_distribution": {
+        "positive": 30.0,
+        "negative": 45.0,
+        "neutral": 25.0
+      },
+      "top_complaint_themes": [
+        "crash_instability",
+        "payment_issues",
+        "onboarding_ux"
+      ],
+      "urgent_feedback_count": 6
+    }
+  },
+  "risk_register": [
+    {
+      "id": "RISK-003",
+      "category": "Performance",
+      "severity": "HIGH",
+      "description": "API latency p95 severely elevated (pre: 201.33ms -> post: 394.34ms). Exceeds 250ms target.",
+      "impact": "Poor UX, timeout cascades, downstream service degradation",
+      "mitigation": "Optimize database queries. Add caching layer.",
+      "owner": "Backend Engineering"
+    },
+    {
+      "id": "RISK-004",
+      "category": "Operational",
+      "severity": "MEDIUM",
+      "description": "Support ticket volume surging (pre: 47.14 -> post: 125.57 daily). Team may be overwhelmed.",
+      "impact": "Increased response times, lower CSAT",
+      "mitigation": "Activate overflow support. Deploy auto-response for known issues.",
+      "owner": "Support Team Lead"
+    },
+    {
+      "id": "RISK-006",
+      "category": "Systemic",
+      "severity": "HIGH",
+      "description": "4 metrics degrading simultaneously. Compounding effects likely - crashes cause support surge, which increases churn.",
+      "impact": "Cascading failure across stability, revenue, and retention",
+      "mitigation": "Consider full rollback to break the chain.",
+      "owner": "VP Engineering"
+    }
+  ],
+  "risk_summary": {
+    "total_risks": 3,
+    "critical": 0,
+    "high": 2,
+    "medium": 1,
+    "low": 0,
+    "overall_risk_score": 60.0
+  },
+  "assumption_challenges": [
+    {
+      "assumption": "Feature adoption is positive signal",
+      "challenge": "High adoption + high crash rate means MORE users hit bugs. Adoption without stability is a liability.",
+      "evidence_needed": "Crash rate segmented by Smart Insights adopters vs non-adopters"
+    },
+    {
+      "assumption": "DAU increase validates the launch",
+      "challenge": "DAU increase could be curiosity-driven, not sustained value.",
+      "evidence_needed": "Cohort retention analysis for Smart Insights adopters"
+    },
+    {
+      "assumption": "Known issues have viable workarounds",
+      "challenge": "Disabling animated charts degrades the feature value proposition.",
+      "evidence_needed": "Percentage of crash-affected users who applied workaround"
+    },
+    {
+      "assumption": "Positive feedback balances negative",
+      "challenge": "Satisfied users may not yet have encountered device-specific bugs.",
+      "evidence_needed": "Device/OS segmentation of positive vs negative feedback"
+    }
+  ],
+  "action_plan": {
+    "timeframe": "24-48 hours",
+    "actions": [
+      {
+        "timeframe": "0-2 hours",
+        "action": "Toggle feature flag smart_insights_enabled=false",
+        "owner": "SRE Team",
+        "priority": "P0"
+      },
+      {
+        "timeframe": "0-2 hours",
+        "action": "Rollback payment SDK to v3.7.x",
+        "owner": "Payments Team",
+        "priority": "P0"
+      },
+      {
+        "timeframe": "0-4 hours",
+        "action": "Deploy status page update and user communications",
+        "owner": "Marketing/Comms",
+        "priority": "P0"
+      },
+      {
+        "timeframe": "2-6 hours",
+        "action": "Root cause analysis for Android 13 crashes",
+        "owner": "Mobile Engineering",
+        "priority": "P1"
+      },
+      {
+        "timeframe": "2-8 hours",
+        "action": "Audit all payment transactions post-launch for failures/double-charges",
+        "owner": "Finance + Payments",
+        "priority": "P1"
+      },
+      {
+        "timeframe": "4-12 hours",
+        "action": "Prepare hotfix branch with crash fix + latency optimization",
+        "owner": "Engineering Lead",
+        "priority": "P1"
+      },
+      {
+        "timeframe": "12-24 hours",
+        "action": "Review and respond to all 1-star app store reviews",
+        "owner": "Customer Success",
+        "priority": "P2"
+      },
+      {
+        "timeframe": "24-48 hours",
+        "action": "Validate hotfix in staging environment",
+        "owner": "QA Team",
+        "priority": "P1"
+      },
+      {
+        "timeframe": "24-48 hours",
+        "action": "Prepare re-launch plan with gated rollout (10% -> 50% -> 100%)",
+        "owner": "Product Manager",
+        "priority": "P2"
+      }
+    ]
+  },
+  "communication_plan": {
+    "decision_context": "ROLL_BACK",
+    "internal_communications": [
+      {
+        "audience": "Engineering",
+        "message": "War room decision: Feature rollout paused/rolled back. Priority hotfix sprint initiated.",
+        "channel": "Slack #engineering",
+        "timing": "Immediate"
+      },
+      {
+        "audience": "Customer Success",
+        "message": "Prepare for increased inbound. Talking points and known issue guide attached.",
+        "channel": "Slack #cs-team + Email",
+        "timing": "Within 1 hour"
+      },
+      {
+        "audience": "Leadership",
+        "message": "Launch status update: Decision to pause/rollback due to stability concerns. Recovery plan in progress.",
+        "channel": "Email + Meeting invite",
+        "timing": "Within 2 hours"
+      },
+      {
+        "audience": "All Hands",
+        "message": "Feature launch update - temporary pause while we address user-reported issues.",
+        "channel": "Slack #general",
+        "timing": "Within 4 hours"
+      }
+    ],
+    "external_communications": [
+      {
+        "audience": "Affected Users",
+        "message": "We have identified issues with our latest update and are actively working on fixes. We apologize for the inconvenience.",
+        "channel": "In-app banner + Email",
+        "timing": "Within 2 hours"
+      },
+      {
+        "audience": "All Users",
+        "message": "We are aware of stability issues in our recent update and are prioritizing fixes. Your experience matters to us.",
+        "channel": "Status page + Blog",
+        "timing": "Within 4 hours"
+      }
+    ],
+    "social_media_response": [
+      {
+        "platform": "Twitter",
+        "action": "Respond to negative mentions with acknowledgment and status page link",
+        "tone": "Empathetic, transparent, solution-focused"
+      },
+      {
+        "platform": "App Store",
+        "action": "Post developer response to 1-star reviews acknowledging the issue",
+        "tone": "Professional, with fix timeline"
+      }
+    ],
+    "support_team_guidance": [
+      "Acknowledge the issue immediately - do not deflect",
+      "Provide workaround for crash issues: disable animated charts in Settings > Display",
+      "For payment failures: advise retry after 30 seconds; escalate double-charges to billing team immediately",
+      "Log all contacts with issue category tags for tracking",
+      "Escalate any cancellation threats to retention team"
+    ]
+  },
+  "confidence": {
+    "score": 95,
+    "factors": [
+      "Health score: 0/100",
+      "Risk score: 60.0/100",
+      "Failing criteria: 6/7",
+      "Agent consensus: 2 distinct recommendations"
+    ],
+    "would_increase_confidence": [
+      "Device-specific crash rate breakdown (Android 13 segmentation)",
+      "A/B test data comparing feature-on vs feature-off cohorts",
+      "Payment failure correlation with specific payment methods",
+      "Real-time server logs for past 6 hours",
+      "User session replay data for crash scenarios"
+    ]
+  },
+  "detailed_reports": {
+    "data_analyst": {
+      "health_score": 0,
+      "failing_criteria_count": 6,
+      "critical_anomaly_count": 61,
+      "degrading_metrics": [
+        "dau",
+        "wau",
+        "api_latency_p95_ms",
+        "support_ticket_volume"
+      ],
+      "improving_metrics": [
+        "feature_adoption_funnel_pct"
+      ]
+    },
+    "product_manager": {
+      "user_impact": {
+        "level": "HIGH",
+        "detail": "45.0% negative sentiment. Users reporting crashes, payment failures, and performance issues.",
+        "net_sentiment_score": -15.0
+      },
+      "feature_adoption": {
+        "current_pct": 38.08,
+        "trend": "increasing",
+        "target_pct": 20.0,
+        "meets_target": true
+      },
+      "go_nogo_framing": {
+        "go_factors": [
+          "Feature adoption at 38.08% (meets target)",
+          "DAU increased 20.44% post-launch"
+        ],
+        "nogo_factors": [
+          "6 success criteria failing",
+          "Net sentiment negative (-15.0)",
+          "61 critical anomalies detected"
+        ],
+        "go_count": 2,
+        "nogo_count": 3
+      }
+    },
+    "marketing_comms": {
+      "perception_risk": "HIGH",
+      "sentiment_percentages": {
+        "positive": 30.0,
+        "negative": 45.0,
+        "neutral": 25.0
+      },
+      "urgent_feedback_count": 6
+    },
+    "risk_critic": {
+      "total_risks": 3,
+      "overall_risk_score": 60.0,
+      "evidence_requested": [
+        "Crash rate by device type and OS version",
+        "Payment failure rate by time of day and method",
+        "Funnel drop-off analysis for Smart Insights",
+        "Server-side error logs from past 48 hours",
+        "A/B comparison if control group exists"
+      ]
+    },
+    "sre": {
+      "system_status": "WARNING",
+      "rollback_readiness": {
+        "is_ready": true,
+        "mechanism": "If critical issues arise, rollback to v4.1.9 is available via feature flag `smart_insights_enabled=false`. Database migrations are backward-compatible.",
+        "estimated_rollback_time": "< 15 minutes (feature flag toggle)",
+        "data_migration_safe": true
+      }
+    }
+  }
+}
