@@ -1,4 +1,0 @@
-# PurpleMerit War Room - Dependencies
-# No external dependencies required!
-# The system uses only Python standard library:
-# - json, csv, math, datetime, argparse, os, sys, typing
